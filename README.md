@@ -1,6 +1,6 @@
 # Voting System Smart Contract
 
-This Solidity smart contract implements a basic voting system. It allows individuals to cast their votes, subject to age verification and a maximum group size limit.
+This Solidity smart contract implements a basic voting system, allowing individuals to cast votes with age verification and group size limits.
 
 ## Features
 
