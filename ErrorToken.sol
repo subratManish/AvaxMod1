@@ -19,16 +19,21 @@ contract VotingSystem {
     }
 
     function vote() public {
+        // Basic input validation using require
         require(msg.sender != address(0), "Invalid address");
         require(!hasVoted[msg.sender], "You have already voted");
         
         // Additional checks, if needed, can be added here
         
         // Logic to verify age (18 or older)
-        require(ageVerification(), "You must be 18 or older to vote");
+        if (!ageVerification()) {
+            revert("You must be 18 or older to vote");
+        }
 
         // Logic to check group size
-        require(checkGroupSize(), "Group size exceeded");
+        if (!checkGroupSize()) {
+            revert("Group size exceeded");
+        }
 
         // Perform voting action
         // (For simplicity, let's just increment the totalVotes counter)
@@ -47,11 +52,19 @@ contract VotingSystem {
     function checkGroupSize() internal view returns (bool) {
         // Implement your logic to check the group size here
         // For simplicity, we assume that the totalVotes should not exceed the maxGroupSize.
-        return totalVotes < maxGroupSize;
+        
+        // Using assert to ensure maxGroupSize is greater than 0
+        assert(maxGroupSize > 0);
+
+        // Using require to check the group size limit
+        require(totalVotes < maxGroupSize, "Group size exceeded");
+
+        return true;
     }
 
     // Function to change the maximum group size, only callable by the owner
     function setMaxGroupSize(uint newSize) public onlyOwner {
+        // Using require for input validation
         require(newSize > 0, "Group size must be greater than 0");
         maxGroupSize = newSize;
     }
